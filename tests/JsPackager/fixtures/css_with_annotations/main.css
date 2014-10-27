@@ -1,0 +1,9 @@
+/*
+@requireStyle buddy.css
+@root
+@require another.js
+*/
+
+body {
+    color: auto;
+}

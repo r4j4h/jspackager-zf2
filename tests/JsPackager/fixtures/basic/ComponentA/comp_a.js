@@ -1,0 +1,1 @@
+window.comp_a = "minnie";

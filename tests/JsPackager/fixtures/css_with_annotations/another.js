@@ -1,0 +1,1 @@
+window.another = 1;

@@ -1,0 +1,39 @@
+{
+    "name": "r4j4h/jspackager-zf2",
+    "description": "Concrete classes for Zend 2 and Zend 2 View Helpers for jspackager-test.",
+    "keywords": ["zend framework 2.0", "zend", "dependency resolution", "file inclusion", "compilation"],
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:r4j4h/jspackager-test"
+        }
+    ],
+    "require": {
+        "psr/log": "1.0.0",
+        "zendframework/zendframework": "2.3.*",
+        "r4j4h/jspackager-test": "1.0.x-dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*",
+        "phing/phing": "2.*",
+        "phpmd/phpmd": "2.1.1",
+        "phploc/phploc": "~2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "JsPackager\\": ["src/"]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JsPackagerTest\\": "tests/JsPackager/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "1.1.x-dev",
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
