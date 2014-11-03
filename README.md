@@ -78,7 +78,9 @@ or
 $this->scriptFile()->appendFile('js/index.js');
 ```
 
-For example, if index.js contained `// @require bar/baz.js` then the layout should have:
+For example, if index.js contained `// @require bar/baz.js` then the generated layout should have:
 
+```
 <script type="text/javascript" src="/js/bar/baz.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
+```
