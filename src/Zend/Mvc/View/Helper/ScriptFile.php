@@ -45,6 +45,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         $helperPluginManager = $this->getServiceLocator();
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
         $fileUrl = new FileUrl();
+        $fileUrl->setServiceLocator($this->getServiceLocator());
 
         return $fileUrl->srcToSharedUrl($url, $config);
     }
@@ -157,7 +158,8 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         // Get CDN path from config
         $helperPluginManager = $this->getServiceLocator();
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
-        $productionCdnPath = FileUrl::getProductionCdnPath($config);
+        $fileUrl = new FileUrl();
+        $productionCdnPath = $fileUrl->getProductionCdnPath($config);
 
         // We want to work from the web relative root, so we should ensure the appropriate baseUrl is there
         if ( strpos( $filePath, $productionCdnPath ) === 0 )

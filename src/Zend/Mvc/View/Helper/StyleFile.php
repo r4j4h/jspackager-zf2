@@ -71,6 +71,8 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
         $fileUrl = new FileUrl();
 
+        $fileUrl->setServiceLocator($this->getServiceLocator());
+
         return $fileUrl->srcToSharedUrl($url, $config);
     }
 
