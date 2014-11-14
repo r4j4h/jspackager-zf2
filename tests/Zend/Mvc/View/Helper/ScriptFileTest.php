@@ -9,7 +9,7 @@
  * @package   Zend_View
  */
 
-namespace EMRCoreTest\Unit\Zend\Mvc\View\Helper;
+namespace JsPackager\Unit\Zend\Mvc\View\Helper;
 
 use Zend\View\Helper\Placeholder\Registry;
 use JsPackager\Zend\Mvc\View\Helper\ScriptFile;

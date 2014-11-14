@@ -9,7 +9,7 @@
  * @package   Zend_View
  */
 
-namespace EMRCoreTest\Unit\Zend\Mvc\View\Helper;
+namespace JsPackager\Unit\Zend\Mvc\View\Helper;
 
 use JsPackager\Exception\MissingFile as MissingFileException;
 use JsPackager\Exception\MissingFile;
