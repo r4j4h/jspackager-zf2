@@ -16,10 +16,12 @@ class Zend2FileUrl extends FileUrl
      * Returns the baseUrl for building paths to stylesheet URL.
      * @return string
      */
-    public static function getBaseUrl()
+    public function getBaseUrl()
     {
         $request = new ZendRequest();
-        return $request->getBaseUrl();
+        $basePath = $request->getBaseUrl();
+
+        return $basePath;
     }
 
 }

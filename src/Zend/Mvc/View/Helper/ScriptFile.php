@@ -7,9 +7,8 @@ namespace JsPackager\Zend\Mvc\View\Helper;
 
 use JsPackager\Compiler;
 use JsPackager\Exception\MissingFile as MissingFileException;
-use JsPackager\Exception\MissingFile;
 use JsPackager\FileHandler;
-use JsPackager\FileUrl;
+use JsPackager\Zend2FileUrl;
 use Zend\Config\Config as ZendConfig;
 use Zend\Http\PhpEnvironment\Request as ZendRequest;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -41,11 +40,11 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
      */
     protected function convertUrlToShared($url)
     {
-        /** Grab ServiceLocator from $helperPluginManager and passing the Config to FileUrl */
+        /** Grab ServiceLocator from $helperPluginManager and passing the Config to Zend2FileUrl */
         $helperPluginManager = $this->getServiceLocator();
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
-        $fileUrl = new FileUrl();
-        $fileUrl->setServiceLocator($this->getServiceLocator());
+
+        $fileUrl = new Zend2FileUrl();
 
         return $fileUrl->srcToSharedUrl($url, $config);
     }
@@ -158,7 +157,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         // Get CDN path from config
         $helperPluginManager = $this->getServiceLocator();
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
-        $fileUrl = new FileUrl();
+        $fileUrl = new Zend2FileUrl();
         $productionCdnPath = $fileUrl->getProductionCdnPath($config);
 
         // We want to work from the web relative root, so we should ensure the appropriate baseUrl is there
@@ -192,8 +191,13 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
      */
     protected function passToDependencyTree($scriptSrc) {
 
+        // Get CDN path from config
+        $helperPluginManager = $this->getServiceLocator();
+        $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
+        $cdnSharedPath = $config->cdn->cdn_shared_path;
+
         // Pass to dependency tree
-        $depTree = new \JsPackager\DependencyTree( $scriptSrc, null, true );
+        $depTree = new \JsPackager\Zend2DependencyTree( $scriptSrc, null, true, null, $cdnSharedPath );
         $dependencies = $depTree->flattenDependencyTree(false);
 
         return $dependencies;
@@ -296,10 +300,10 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
     }
 
     protected function addCacheBust($src) {
-        /** Grab ServiceLocator from $helperPluginManager and passing the Config to FileUrl */
+        /** Grab ServiceLocator from $helperPluginManager and passing the Config to Zend2FileUrl */
         $helperPluginManager = $this->getServiceLocator();
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
-        $fileUrl = new FileUrl();
+        $fileUrl = new Zend2FileUrl();
 
         return $fileUrl->getCacheBustString($src, $this->getRealPathFromRelativePath($src), $config);
     }

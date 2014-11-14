@@ -5,7 +5,7 @@
 
 namespace JsPackager\Zend\Mvc\View\Helper;
 
-use JsPackager\FileUrl;
+use JsPackager\Zend2FileUrl;
 use Zend\Config\Config as ZendConfig;
 use Zend\Http\PhpEnvironment\Request as ZendRequest;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -66,12 +66,10 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
      */
     protected function convertUrlToShared($url)
     {
-        /** Grab ServiceLocator from $helperPluginManager and passing the Config to FileUrl */
+        /** Grab ServiceLocator from $helperPluginManager and passing the Config to Zend2FileUrl */
         $helperPluginManager = $this->getServiceLocator();
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
-        $fileUrl = new FileUrl();
-
-        $fileUrl->setServiceLocator($this->getServiceLocator());
+        $fileUrl = new Zend2FileUrl();
 
         return $fileUrl->srcToSharedUrl($url, $config);
     }
@@ -92,10 +90,10 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
     }
 
     protected function addCacheBust($src) {
-        /** Grab ServiceLocator from $helperPluginManager and passing the Config to FileUrl */
+        /** Grab ServiceLocator from $helperPluginManager and passing the Config to Zend2FileUrl */
         $helperPluginManager = $this->getServiceLocator();
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
-        $fileUrl = new FileUrl();
+        $fileUrl = new Zend2FileUrl();
 
         $scriptFile = $this->getScriptFileReference();
 
