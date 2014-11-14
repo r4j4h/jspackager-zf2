@@ -50,12 +50,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/r4j4h/jspackager-test.git",
-                "reference": "7bf95f478d952c0c9e0f46e953cc100cfa5079bd"
+                "reference": "555d98da91655c375f938c3451cd678a058d17c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/r4j4h/jspackager-test/zipball/7bf95f478d952c0c9e0f46e953cc100cfa5079bd",
-                "reference": "7bf95f478d952c0c9e0f46e953cc100cfa5079bd",
+                "url": "https://api.github.com/repos/r4j4h/jspackager-test/zipball/555d98da91655c375f938c3451cd678a058d17c5",
+                "reference": "555d98da91655c375f938c3451cd678a058d17c5",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                 "source": "https://github.com/r4j4h/jspackager-test/tree/master",
                 "issues": "https://github.com/r4j4h/jspackager-test/issues"
             },
-            "time": "2014-11-14 00:48:45"
+            "time": "2014-11-14 17:56:51"
         },
         {
             "name": "zendframework/zendframework",
