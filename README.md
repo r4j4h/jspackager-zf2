@@ -84,3 +84,89 @@ For example, if index.js contained `// @require bar/baz.js` then the generated l
 <script type="text/javascript" src="/js/bar/baz.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
 ```
+
+
+
+
+
+----
+
+Also here are Zend 2 config options:
+
+```
+
+    /**
+     * Compiled Scripts switch.
+     *
+     * If true, each raw dependency is included not compiled.
+     * If false, compiled files and their compiled dependencies are loaded.
+     */
+    'use_compiled_scripts' => false,
+
+    /**
+     * Compiled Scripts Fallback switch.
+     *
+     * Occurs when use_compiled_scripts is set to true and a compiled script is not found...
+     *
+     * If true, the raw source script is loaded and read as if use_compiled_scripts was set to false for that file.
+     * If false, an error is thrown.
+     */
+    'fallback_if_missing_compiled_script' => false,
+
+    /**
+     * CDN/Shared mode switch.
+     *
+     * If true, shared files are pulled in from CDN
+     * If false, shared file are pulled in from local shared EMRJS folder
+     */
+    'use_cdn_for_shared' => false,
+
+
+
+    /**
+     * Cache Bust switch.
+     *
+     * If true, files are suffixed with a cache bust query parameter to prevent caching from preventing a user
+     * from getting an updated version.
+     * If false, files are not given any special treatment.
+     */
+    'use_cache_busting' => false,
+
+    /**
+     * Configuration related to Cache Busting
+     */
+    'cache_busting' => array(
+
+        /**
+         * Cache Bust Strategy
+         *
+         * Used to determine the value to use for cache bust.
+         * E.g. given some_file.thing?_cacheBust=13, "13" is the query value
+         *
+         * Valid values are:
+         *      'constant'   - Use a file's modified time as the query value
+         *      'mtime'      - Use cache_busting.constant_value as the query value
+         */
+        'strategy' => 'constant',
+
+        /**
+         * Constant value to use as the cache bust value
+         *
+         * E.g. given some_file.thing?_cacheBust=13, "13" is the query value
+         */
+        'constant_value' => 1,
+
+        /**
+         * The string used as the default query key in URLs.
+         *
+         * E.g. given some_file.thing?_cacheBust=13, "_cacheBust" is the query key
+         */
+        'key_string' => '_cachebust',
+
+    ),
+
+
+```
+
+TODO
+- Provide example layout, or link to a repo that uses with example layout file
