@@ -96,6 +96,34 @@ Also here are Zend 2 config options:
 ```
 
     /**
+     * CDN Configuration Section
+     */
+    'cdn' => array(
+
+        /**
+         * CDN Protocol, Domain and URL string
+         *
+         * NOTE: This should not have a trailing slash.
+         *
+         * Prepended to a shared file's path to switch from local access to CDN access.
+         */
+        'url' => 'URL_CDN', // Update to relevant CDN.
+
+
+        /**
+         * Location from base url that shared files are located on the CDN.
+         *
+         * NOTE: This should not have a beginning or trailing slash, but may
+         * include inner slashes to reflect subfolders.
+         *
+         * Locally this might be like with 'shared':
+         * <cdn-url>/<cdn-shared-path>/<file-url>        - Shared JS (CDN)
+         */
+        'cdn_shared_path' => 'shared',
+    ),
+
+
+    /**
      * Compiled Scripts switch.
      *
      * If true, each raw dependency is included not compiled.
