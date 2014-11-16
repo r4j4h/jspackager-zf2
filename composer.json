@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JsPackager\\": ["src/JsPackager/"]
+            "JsPackager\\": ["src/"]
         }
     },
     "autoload-dev": {
