@@ -29,8 +29,6 @@ class ScriptVars extends AbstractHelper implements ServiceLocatorAwareInterface
 
     public function __invoke($jsVarsObj = Array())
     {
-        $globalPrefix = $this->globalPrefix;
-
         $helperPluginManager = $this->getServiceLocator(); // We need to pop out and get the global ServiceLocator
         $config = $helperPluginManager->getServiceLocator()->get('Config');
         $configBlock = isset( $config['ScriptVars'] ) ? $config['ScriptVars'] : array();
