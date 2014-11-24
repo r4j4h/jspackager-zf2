@@ -19,8 +19,6 @@ class ScriptVars extends AbstractHelper implements ServiceLocatorAwareInterface
 
     protected $serviceLocator;
 
-    protected $globalPrefix = 'wpt';
-
     protected $request;
 
     public function __construct()
@@ -31,8 +29,14 @@ class ScriptVars extends AbstractHelper implements ServiceLocatorAwareInterface
 
     public function __invoke($jsVarsObj = Array())
     {
-
         $globalPrefix = $this->globalPrefix;
+
+        $helperPluginManager = $this->getServiceLocator(); // We need to pop out and get the global ServiceLocator
+        $config = $helperPluginManager->getServiceLocator()->get('Config');
+        $configBlock = isset( $config['ScriptVars'] ) ? $config['ScriptVars'] : array();
+        $configPrefix = isset( $config['ScriptVars']['prefix'] ) ? $config['ScriptVars']['prefix'] : false;
+
+        $prefix = ( $configPrefix !== false ? $configPrefix : false );
 
         $jsVarsObj = $this->applyBasePath( $jsVarsObj );
         $jsVarsObj = $this->applyControllerActionInfo( $jsVarsObj );
@@ -43,8 +47,18 @@ class ScriptVars extends AbstractHelper implements ServiceLocatorAwareInterface
         // If the jsVars isn't empty, json encode it, otherwise default to empty JS object (not array).
         $jsVarsObj = (!empty($jsVarsObj)) ? json_encode($jsVarsObj) : '{}';
 
-        $pageScript = "var " . $globalPrefix . " = " . $globalPrefix . " || {}; " . $globalPrefix . ".page = " . $globalPrefix . ".page || {};";
-        $pageScript .= "" . $globalPrefix . ".page.vars = " . $jsVarsObj . ";";
+        if ( $prefix ) {
+
+            $pageScript = "var " . $prefix . " = " . $prefix . " || {}; " . $prefix . ".page = " . $prefix . ".page || {};";
+            $pageScript .= "" . $prefix . ".page.vars = " . $jsVarsObj . ";";
+
+        } else {
+
+            $pageScript = "var page = page || {};";
+            $pageScript .= "page.vars = " . $jsVarsObj . ";";
+
+        }
+
 
         return $pageScript;
     }
