@@ -52,6 +52,17 @@ How To Use
         },
     ),
 ),
+
+
+'ScriptVars' => array(
+    /**
+     * Destination for the scriptVars `page` object.
+     * In this example it would be found at `myGlobalNamespace.page`.
+     * Set to false or do not include for "page" variable to be directly attached to the global (e.g. window.page in browserland)
+     */
+    'prefix' => 'myGlobalNamespace' // Set to false or do not include for "page" variable to be the global
+),
+
 ```
 
 or
@@ -63,6 +74,15 @@ or
         'StyleFile'  => 'JsPackager\Zend\Mvc\View\Helper\StyleFile',
         'ScriptVars'  => 'JsPackager\Zend\Mvc\View\Helper\ScriptVars',
     ),
+),
+
+'ScriptVars' => array(
+    /**
+     * Destination for the scriptVars `page` object.
+     * In this example it would be found at `myGlobalNamespace.page`.
+     * Set to false or do not include for "page" variable to be directly attached to the global (e.g. window.page in browserland)
+     */
+    'prefix' => 'myGlobalNamespace' // Set to false for "page" to be global
 ),
 ```
 
