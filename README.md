@@ -24,8 +24,8 @@ How To Use
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.3.*",
-        "r4j4h/jspackager-test": "1.0.x-dev",
-        "r4j4h/jspackager-zf2": "1.0.x-dev"
+        "r4j4h/jspackager-test": "~1.0@dev",
+        "r4j4h/jspackager-zf2": "~1.0@dev"
     },
 ```
 
