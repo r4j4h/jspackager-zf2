@@ -146,6 +146,10 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
             $value->src = $this->addCacheBust( $value->src );
         }
 
+        if ( isset( $value->media ) ) {
+            $value->media = "print, screen";
+        }
+        
         return $this->getContainer()->append($value);
     }
 
@@ -167,6 +171,10 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
 
         $value->href = $this->addCacheBust( $value->href );
 
+        if ( isset( $value->media ) ) {
+            $value->media = "print, screen";
+        }
+
         return $this->getContainer()->offsetSet($index, $value);
     }
 
@@ -187,6 +195,10 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
 
         $value->href = $this->addCacheBust( $value->href );
 
+        if ( isset( $value->media ) ) {
+            $value->media = "print, screen";
+        }
+
         return $this->getContainer()->prepend($value);
     }
 
@@ -206,6 +218,10 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
         }
 
         $value->href = $this->addCacheBust( $value->href );
+
+        if ( isset( $value->media ) ) {
+            $value->media = "print, screen";
+        }
 
         return $this->getContainer()->set($value);
     }
