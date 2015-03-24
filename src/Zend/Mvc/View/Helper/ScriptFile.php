@@ -146,6 +146,17 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
     }
 
     /**
+     * Get the config for reading behavioral settings
+     *
+     * @return mixed
+     */
+    protected function getConfig() {
+        $helperPluginManager = $this->getServiceLocator();
+        $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config'));
+        return $config;
+    }
+
+    /**
      * Re-attach the appropriate web relative part of a file path. Including the baseUrl if one should be present.
      * @param string $filePath
      * @return string
@@ -155,8 +166,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         $baseUrl = $this->getBaseUrl();
 
         // Get CDN path from config
-        $helperPluginManager = $this->getServiceLocator();
-        $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
+        $config = $this->getConfig();
         $fileUrl = new Zend2FileUrl();
         $productionCdnPath = $fileUrl->getProductionCdnPath($config);
 
@@ -232,8 +242,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
     {
         $scripts = array();
 
-        $helperPluginManager = $this->getServiceLocator();
-        $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
+        $config = $this->getConfig();
 
         // Analyze any query/hash parameters for preservation
         $parseUrlInfo = parse_url( $sourceScript );
