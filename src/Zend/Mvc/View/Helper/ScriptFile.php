@@ -8,6 +8,7 @@ namespace JsPackager\Zend\Mvc\View\Helper;
 use JsPackager\Compiler;
 use JsPackager\Exception\MissingFile as MissingFileException;
 use JsPackager\FileHandler;
+use JsPackager\ManifestResolver;
 use JsPackager\Zend2FileUrl;
 use Zend\Config\Config as ZendConfig;
 use Zend\Http\PhpEnvironment\Request as ZendRequest;
@@ -260,7 +261,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
         if ( $config->use_compiled_scripts ) {
             try {
-                $scriptPaths = $this->lookForCompiledFile( $sourceScript );
+                $scriptPaths = $this->reverseResolveFromCompiledFile( $sourceScript );
             }
             catch ( MissingFileException $e ) {
                 if ( $config->fallback_if_missing_compiled_script )
@@ -278,6 +279,9 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         }
 
         foreach ($scriptPaths as $idx => $scriptPath) {
+
+
+            $scriptPath = $this->replaceRemoteSymbolIfPresent($scriptPath, $this->browserRelativePathToRemote);
 
             // We want to now remove the real absolute file system path
             $scriptPath = str_replace( $this->getFileSystemPath(), '', $scriptPath );
@@ -337,12 +341,16 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
         if ( isset( $value->attributes['src'] ) )
         {
+            $value->attributes['src'] = ltrim($value->attributes['src'], '/');
+
             $thisSrc = $value->attributes['src'];
 
             $scripts = $this->getScriptsToLoad( $thisSrc );
 
             foreach ($scripts as $script)
             {
+                $script->attributes['src'] = $this->replaceRemoteSymbolIfPresent($script->attributes['src'], $this->browserRelativePathToRemote);
+
                 $thisScriptSrc = $script->attributes['src'];
 
                 // Handle stylesheet dependencies
@@ -390,6 +398,8 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
         if ( isset( $value->attributes['src'] ) )
         {
+            $value->attributes['src'] = ltrim($value->attributes['src'], '/');
+
             $thisSrc = $value->attributes['src'];
 
             $scripts = $this->getScriptsToLoad( $thisSrc );
@@ -398,6 +408,8 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
             $scripts = array_reverse( $scripts );
             foreach ($scripts as $script)
             {
+
+                $script->attributes['src'] = $this->replaceRemoteSymbolIfPresent( $script->attributes['src'], $this->browserRelativePathToRemote);
                 $thisScriptSrc = $script->attributes['src'];
 
                 // Handle stylesheet dependencies
@@ -535,79 +547,44 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         return $this;
     }
 
+
+    /**
+     * Get the base path to a file.
+     *
+     * Give it something like '/my/cool/file.jpg' and get '/my/cool/' back.
+     * @param $sourceFilePath
+     * @return string
+     */
+    protected function getBasePathFromSourceFile($sourceFilePath) {
+        return ltrim( ( substr( $sourceFilePath, 0, strrpos($sourceFilePath, '/' )+1 ) ), '/' );
+    }
+
+
     /**
      * Take a file and attempt to open its compiled version and manifest, returning an ordered array of the
      * necessary files to load.
      *
      * @param $sourceFilePath
      * @return array
-     * @throws \JsPackager\Exception\MissingFile
+     * @throws \EMRCore\JsPackager\Exception\MissingFile
      */
-    protected function lookForCompiledFile($sourceFilePath)
+    protected function reverseResolveFromCompiledFile($sourceFilePath, $deeper = false)
     {
-        $files = array();
-        $compiler = $this->getCompiler();
-        $fileHandler = $this->getFileHandler();
-
-        $compiledFilePath = $compiler->getCompiledFilename( $sourceFilePath );
-
-        if ( !$fileHandler->is_file( $compiledFilePath  ) ) {
-            throw new MissingFileException( $compiledFilePath . ' is not a valid file!', 0, null, $compiledFilePath );
-        }
-
-        $manifestFilePath = $compiler->getManifestFilename( $sourceFilePath );
-
-        $filesFromManifest = $this->parseManifestFile( $manifestFilePath );
-
-        if ( $filesFromManifest ) {
-            $files = array_merge( $files, $filesFromManifest['stylesheets'] );
-            $files = array_merge( $files, $filesFromManifest['packages'] );
-        }
-
-        $files[] = $compiledFilePath;
-
-        return $files;
+        $resolver = new ManifestResolver();
+        $resolver->baseFolderPath = './';
+        $resolver->sharedFolderPath = 'shared';
+        return $resolver->resolveFile( $sourceFilePath );
     }
 
-    /**
-     * Extracts packages and stylesheets from a given a manifest file.
-     *
-     * Item in manifest are expected to be separated by newlines, with NO other characters or spaces.
-     *
-     * @param $filePath string File's path
-     */
-    protected function parseManifestFile($filePath) {
-        $fileHandler = $this->getFileHandler();
-        $stylesheets = array();
-        $packages = array();
 
-        if ( !$fileHandler->is_file( $filePath ) ) {
-            return false;
-        }
+    protected $remoteSymbol = '@remote';
+    protected $browserRelativePathToRemote = 'shared';
 
-        // Parse file line by line
-        $fh = $fileHandler->fopen( $filePath, 'r' );
-        while ( ( $line = $fileHandler->fgets($fh) ) !== false )
-        {
-            // Strip new line characters
-            $line = rtrim( $line, "\r\n" );
+    protected function replaceRemoteSymbolIfPresent($filePath, $browserRelativePathToRemote = '') {
 
-            if ( preg_match('/.js$/i', $line ) ) {
-                $packages[] = $line;
-            }
-            else if ( preg_match('/.css$/i', $line ) ) {
-                $stylesheets[] = $line;
-            }
-            else {
-                throw new ParsingException("Malformed manifest entry encountered", null, $line);
-            }
-        }
-        $fileHandler->fclose($fh);
+        $resolver = new ManifestResolver();
+        return $resolver->replaceRemoteSymbolIfPresent( $filePath, $browserRelativePathToRemote );
 
-        return array(
-            'stylesheets' => $stylesheets,
-            'packages' => $packages
-        );
     }
 
 
