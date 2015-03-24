@@ -307,6 +307,8 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
                 $scripts[] = $dependentScriptObject;
             }
 
+            $scriptPaths[$idx] = $scriptPath;
+
         }
 
         return $scripts;
