@@ -207,8 +207,11 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         $config = new ZendConfig($helperPluginManager->getServiceLocator()->get('Config')); //TODO refactor out
         $cdnSharedPath = $config->cdn->cdn_shared_path;
 
+        // Prefix with public path so we can load it
+        $cdnSharedPathInPublic = 'public/' . $cdnSharedPath;
+
         // Pass to dependency tree
-        $depTree = new \JsPackager\Zend2DependencyTree( $scriptSrc, null, true, null, $cdnSharedPath );
+        $depTree = new \JsPackager\Zend2DependencyTree( $scriptSrc, null, true, null, $cdnSharedPathInPublic );
         $dependencies = $depTree->flattenDependencyTree(false);
 
         return $dependencies;
