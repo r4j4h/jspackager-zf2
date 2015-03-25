@@ -577,7 +577,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
     {
         $resolver = new ManifestResolver();
         $resolver->baseFolderPath = './';
-        $resolver->sharedFolderPath = 'shared';
+        $resolver->remoteFolderPath = 'shared';
         return $resolver->resolveFile( $sourceFilePath );
     }
 

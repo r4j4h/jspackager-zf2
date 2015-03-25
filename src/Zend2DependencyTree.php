@@ -43,7 +43,7 @@ class Zend2DependencyTree extends DependencyTree
     protected function getDependencyTreeParser()
     {
         $treeParser = parent::getDependencyTreeParser();
-        $treeParser->sharedFolderPath = $this->nonCdnSharedFolder;
+        $treeParser->remoteFolderPath = $this->nonCdnSharedFolder;
         return $treeParser;
     }
 
