@@ -91,9 +91,11 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
     protected function getBaseUrl()
     {
         $baseUrl = '';
-        $request = new ZendRequest();
-        if ( $request ) {
-            $baseUrl = $request->getBaseUrl();
+        if ( class_exists( 'Zend\Http\PhpEnvironment\Request' ) ) {
+            $request = new ZendRequest();
+            if ($request) {
+                $baseUrl = $request->getBaseUrl();
+            }
         }
         return $baseUrl;
     }
@@ -581,7 +583,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
      * @return array
      * @throws MissingFile
      */
-    protected function reverseResolveFromCompiledFile($sourceFilePath, $deeper = false)
+    protected function reverseResolveFromCompiledFile($sourceFilePath)
     {
         $resolver = $this->getResolver();
         $filePaths = $resolver->resolveFile( $sourceFilePath );
@@ -715,6 +717,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
     {
         $this->resolver = ( $this->resolver ? $this->resolver : new ManifestResolver() );
 
+        $this->resolver->setFileHandler( $this->getFileHandler() );
         $this->resolver->remoteFolderPath = $this->getLocallyHostedRemotePath();
         $this->resolver->baseFolderPath = $this->getBaseUrl();
 

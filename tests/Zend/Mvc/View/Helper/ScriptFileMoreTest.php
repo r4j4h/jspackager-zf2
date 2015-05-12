@@ -1,5 +1,5 @@
 <?php
-/** Based on HeadScriptTest, for use on WebPT EMRCore
+/** Based on HeadScriptTest, for use on WebPT JsPackager
  *
  * Zend Framework (http://framework.zend.com/)
  *
@@ -31,8 +31,8 @@ use JsPackager\Helpers\Reflection as ReflectionHelper;
  */
 class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 {
-    // Tests are run from EMRCore root
-    const fixturesBasePath = 'tests/EMRCoreTest/lib/EMRCoreTest/JsPackager/fixtures/';
+    // Tests are run from JsPackager root
+    const fixturesBasePath = 'tests/JsPackager/fixtures/';
 
 
     /**
@@ -68,7 +68,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         $this->basePath = __DIR__ . '/_files/modules';
         $this->helper = new ScriptFile();
 
-        $this->helper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getFileSystemPath'));
+        $this->helper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getFileSystemPath'));
 
         $this->helper->expects($this->any())
             ->method('getFileSystemPath')
@@ -165,7 +165,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('appendFile'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('appendFile'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
         $mockedHelper->expects($this->once())
             ->method('appendFile')
@@ -187,7 +187,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('appendFile'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('appendFile'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
         $mockedHelper->expects($this->once())
             ->method('appendFile')
@@ -210,7 +210,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('prependFile'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('prependFile'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
         $mockedHelper->expects($this->once())
             ->method('prependFile')
@@ -232,7 +232,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('prependFile'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('prependFile'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
         $mockedHelper->expects($this->once())
             ->method('prependFile')
@@ -320,7 +320,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testStripRelativePathFromFilePathRemovesBaseUrl()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
             ->will($this->returnValue('iAmABaseURL'));
@@ -338,7 +338,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testStripRelativePathFromFilePathRemovesBaseUrlAndSlashes()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
             ->will($this->returnValue('iAmABaseURL'));
@@ -355,7 +355,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testStripRelativePathFromFilePathHandlesEmptyBaseUrl()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
             ->will($this->returnValue(''));
@@ -373,7 +373,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testStripRelativePathFromFilePathHandlesOneSlashBaseUrl()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
             ->will($this->returnValue('/'));
@@ -390,7 +390,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testStripRelativePathFromFilePathHandlesSliceBasedBaseUrlWithTrailingSlash()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
             ->will($this->returnValue('/s/rawr/'));
@@ -407,7 +407,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testStripRelativePathFromFilePathHandlesSliceBasedBaseUrlWithoutTrailingSlash()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
 
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
@@ -426,7 +426,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testStripRelativePathFromFilePathPreservesCleanPath()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
 
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
@@ -460,7 +460,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
 
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
@@ -491,7 +491,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
 
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
@@ -510,7 +510,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testPrependWebRelativeRootToFilePathPrependsSlashWithEmptyBaseUrl()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
 
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
@@ -530,7 +530,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testPrependWebRelativeRootToFilePathPrependsOneSlashWithOneSlashBaseUrl()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
 
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
@@ -550,7 +550,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testPrependWebRelativeRootToFilePathPrependsBaseUrl()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getBaseUrl'));
 
         $mockedHelper->expects($this->once())
             ->method('getBaseUrl')
@@ -574,7 +574,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
     public function testGetScriptsToLoadCallsStripRelativePathFromFilePath()
     {
         $mockedHelper = $this->getMock(
-            'EMRCore\Zend\Mvc\View\Helper\ScriptFile',
+            'JsPackager\Zend\Mvc\View\Helper\ScriptFile',
             array(
                 'stripRelativePathFromFilePath',
             )
@@ -586,7 +586,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
-//        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fclose'));
+//        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fclose'));
 //        $mockedFileHandler->expects($this->any())
 //            ->method('is_file')
 //            ->will($this->returnValue(true));
@@ -605,7 +605,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
     public function testGetScriptsToLoadCallsPrependWebRelativeRootToFilePath()
     {
         $mockedHelper = $this->getMock(
-            'EMRCore\Zend\Mvc\View\Helper\ScriptFile',
+            'JsPackager\Zend\Mvc\View\Helper\ScriptFile',
             array(
                 'prependWebRelativeRootToFilePath',
             )
@@ -617,7 +617,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fclose'));
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
             ->will($this->returnValue(true));
@@ -637,7 +637,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
     public function testGetScriptsToLoadCallsBuildDependentScriptObjectIfUnique()
     {
         $mockedHelper = $this->getMock(
-            'EMRCore\Zend\Mvc\View\Helper\ScriptFile',
+            'JsPackager\Zend\Mvc\View\Helper\ScriptFile',
             array(
                 'buildDependentScriptObjectIfUnique',
             )
@@ -649,7 +649,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fclose'));
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
             ->will($this->returnValue(true));
@@ -671,14 +671,14 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testParseManifestReturnsFalseIfFileDoesNotExist()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
 //        $helper = new ScriptFile();
         $serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
 //        $helper->setServiceLocator( $serviceLocatorMock );
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file'));
 
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
@@ -687,7 +687,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
 //        $serviceLocatorMock->expects($this->once())
 //            ->method('get')
-//            ->with('EMRCore\JsPackager\FileHandler')
+//            ->with('JsPackager\JsPackager\FileHandler')
 //            ->will($this->returnValue( $mockedFileHandler ));
 
         $mockedHelper->setFileHandler( $mockedFileHandler );
@@ -699,14 +699,14 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testParseManifestFileThrowsUponUnexpectedSyntax()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
         $lineA = 'some/path/to/a/stylesheet.css';
         $lineB = 'eggbert';
         $lineC = '/i/love/receiving/packages.js';
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
 
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
@@ -751,12 +751,12 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
     public function testParseManifestFileReturnsArrayContainingStylesheetsAndPackages()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
         $lineA = 'some/path/to/a/stylesheet.css';
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
 
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
@@ -784,7 +784,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseManifestFileParsesFilepaths()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
         $lineA = 'some/path/to/a/stylesheet.css';
@@ -792,7 +792,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         $lineC = 'some/where/over/a/stylesheet.rainbow.css';
         $lineD = '/i/love/receiving/packages.js';
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
 
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
@@ -814,7 +814,6 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
         $stylesheets = $manifestContents['stylesheets'];
         $packages = $manifestContents['packages'];
-
         $this->assertContains( $lineA, $stylesheets );
         $this->assertContains( $lineC, $stylesheets );
         $this->assertContains( $lineB, $packages );
@@ -825,7 +824,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * lookForCompiledFile tests
+     * reverseResolveFromCompiledFile tests
      */
 
     /**
@@ -839,7 +838,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
      */
     private function getSimpleMockedCompiler($sourceFilename, $compiledFilename, $manifestFilename)
     {
-        $mockedCompiler = $this->getMock('EMRCore\JsPackager\Compiler', array('getCompiledFilename', 'getManifestFilename'));
+        $mockedCompiler = $this->getMock('JsPackager\JsPackager\Compiler', array('getCompiledFilename', 'getManifestFilename'));
         $mockedCompiler->expects($this->any())
             ->method('getCompiledFilename')
             ->with($this->equalTo($sourceFilename))
@@ -852,10 +851,10 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         return $mockedCompiler;
     }
 
-    public function testLookForCompiledFileCallsGetCompiledFilenameAndGetManifestFilename()
+    public function testReverseResolveFromCompiledFileCallsGetCompiledFilenameAndGetManifestFilename()
     {
         $mockedHelper = $this->getMock(
-            'EMRCore\Zend\Mvc\View\Helper\ScriptFile',
+            'JsPackager\Zend\Mvc\View\Helper\ScriptFile',
             array(
                 'parseManifestFile'
             )
@@ -868,7 +867,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         $mockedCompiler = $this->getSimpleMockedCompiler('js/test.js', 'js/test.compiled.js', 'js/test.js.manifest' );
         $mockedHelper->setCompiler( $mockedCompiler );
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fclose'));
         $mockedHelper->setFileHandler( $mockedFileHandler );
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
@@ -876,20 +875,20 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
         ReflectionHelper::invoke(
             $mockedHelper,
-            'lookForCompiledFile',
+            'reverseResolveFromCompiledFile',
             array( 'js/test.js' )
         );
     }
 
     /**
-     * @depends testLookForCompiledFileCallsGetCompiledFilenameAndGetManifestFilename
+     * @depends testReverseResolveFromCompiledFileCallsGetCompiledFilenameAndGetManifestFilename
      */
-    public function testLookForCompiledFileThrowsIfMissingCompiledScript()
+    public function testReverseResolveFromCompiledFileThrowsIfMissingCompiledScript()
     {
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
         $mockedHelper->setFileHandler( $mockedFileHandler );
         $mockedFileHandler->expects($this->at(0))
             ->method('is_file')
@@ -897,7 +896,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
         try
         {
-            ReflectionHelper::invoke( $mockedHelper, 'lookForCompiledFile', array( 'some.file.js' ) );
+            ReflectionHelper::invoke( $mockedHelper, 'reverseResolveFromCompiledFile', array( 'some.file.js' ) );
             $this->fail('Should throw a missing file exception');
         } catch ( MissingFileException $e )
         {
@@ -917,12 +916,12 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testLookForCompiledFileCallsGetCompiledFilenameAndGetManifestFilename
+     * @depends testReverseResolveFromCompiledFileCallsGetCompiledFilenameAndGetManifestFilename
      */
-    public function testLookForCompiledFileLooksForConventionalFilename()
+    public function testReverseResolveFromCompiledFileLooksForConventionalFilename()
     {
         $mockedHelper = $this->getMock(
-            'EMRCore\Zend\Mvc\View\Helper\ScriptFile',
+            'JsPackager\Zend\Mvc\View\Helper\ScriptFile',
             array(
                 'parseManifestFile'
             )
@@ -935,23 +934,23 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         $mockedCompiler = $this->getSimpleMockedCompiler('some.file.js', 'some.file.compiled.js', 'some.file.js.manifest' );
         $mockedHelper->setCompiler( $mockedCompiler );
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
         $mockedHelper->setFileHandler( $mockedFileHandler );
         $mockedFileHandler->expects($this->at(0))
             ->method('is_file')
             ->with('some.file.compiled.js')
             ->will($this->returnValue(true));
 
-        ReflectionHelper::invoke( $mockedHelper, 'lookForCompiledFile', array( 'some.file.js' ) );
+        ReflectionHelper::invoke( $mockedHelper, 'reverseResolveFromCompiledFile', array( 'some.file.js' ) );
     }
 
     /**
-     * @depends testLookForCompiledFileCallsGetCompiledFilenameAndGetManifestFilename
+     * @depends testReverseResolveFromCompiledFileCallsGetCompiledFilenameAndGetManifestFilename
      */
-    public function testLookForCompiledFileCallsParseManifestFile()
+    public function testReverseResolveFromCompiledFileCallsParseManifestFile()
     {
         $mockedHelper = $this->getMock(
-            'EMRCore\Zend\Mvc\View\Helper\ScriptFile',
+            'JsPackager\Zend\Mvc\View\Helper\ScriptFile',
             array(
                 'parseManifestFile',
             )
@@ -964,28 +963,28 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
         $mockedHelper->setFileHandler( $mockedFileHandler );
         $mockedFileHandler->expects($this->at(0))
             ->method('is_file')
             ->with('some.file.compiled.js')
             ->will($this->returnValue(true));
 
-        ReflectionHelper::invoke( $mockedHelper, 'lookForCompiledFile', array( 'some.file.js' ) );
+        ReflectionHelper::invoke( $mockedHelper, 'reverseResolveFromCompiledFile', array( 'some.file.js' ) );
     }
 
 
-    public function testLookForCompiledFileReturnsArrayContainingCompiledFile()
+    public function testReverseResolveFromCompiledFileReturnsArrayContainingCompiledFile()
     {
         $mockedHelper = $this->getMock(
-            'EMRCore\Zend\Mvc\View\Helper\ScriptFile',
+            'JsPackager\Zend\Mvc\View\Helper\ScriptFile',
             array(
                 'rawr',
             )
         );
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
         $mockedHelper->setFileHandler( $mockedFileHandler );
         $mockedFileHandler->expects($this->at(0))
             ->method('is_file')
@@ -999,26 +998,26 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
             ->method('fgets')
             ->will($this->onConsecutiveCalls('something.in.a.package.js', false));
 
-        $files = ReflectionHelper::invoke( $mockedHelper, 'lookForCompiledFile', array( 'some.file.js' ) );
+        $files = ReflectionHelper::invoke( $mockedHelper, 'reverseResolveFromCompiledFile', array( 'some.file.js' ) );
 
         $this->assertCount(1, $files);
         $this->assertContains('some.file.compiled.js', $files);
     }
 
     /**
-     * @depends testLookForCompiledFileCallsParseManifestFile
+     * @depends testReverseResolveFromCompiledFileCallsParseManifestFile
      */
-    public function testLookForCompiledFileReturnsArrayContainingAllFilesFromManifest()
+    public function testReverseResolveFromCompiledFileReturnsArrayContainingAllFilesFromManifest()
     {
         $mockedHelper = $this->getMock(
-            'EMRCore\Zend\Mvc\View\Helper\ScriptFile',
+            'JsPackager\Zend\Mvc\View\Helper\ScriptFile',
             array(
                 'rawr',
             )
         );
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
         $mockedHelper->setFileHandler( $mockedFileHandler );
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
@@ -1027,7 +1026,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
             ->method('fgets')
             ->will($this->onConsecutiveCalls('some.package.js', 'some.style.css', 'another.package.js', false));
 
-        $files = ReflectionHelper::invoke( $mockedHelper, 'lookForCompiledFile', array( 'some.file.js' ) );
+        $files = ReflectionHelper::invoke( $mockedHelper, 'reverseResolveFromCompiledFile', array( 'some.file.js' ) );
 
         $this->assertCount(4, $files);
         $this->assertContains('some.package.js', $files);
@@ -1037,9 +1036,9 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testLookForCompiledFileCallsParseManifestFile
+     * @depends testReverseResolveFromCompiledFileCallsParseManifestFile
      */
-    public function testLookForCompiledFileAssumesEmptyManifestIfMissingManifest()
+    public function testReverseResolveFromCompiledFileAssumesEmptyManifestIfMissingManifest()
     {
         $testCdn = 'https://cdn.test.com';
         $config = array(
@@ -1053,11 +1052,11 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('mockPlaceholder'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
 
         $mockedFileHandler->expects($this->at(0))
             ->method('is_file')
@@ -1071,7 +1070,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
 
         $mockedHelper->setFileHandler( $mockedFileHandler );
 
-        $results = ReflectionHelper::invoke( $mockedHelper, 'lookForCompiledFile', array( 'some.file.js' ) );
+        $results = ReflectionHelper::invoke( $mockedHelper, 'reverseResolveFromCompiledFile', array( 'some.file.js' ) );
 
         $this->assertCount( 1, $results );
     }
@@ -1094,7 +1093,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('passToDependencyTree', 'getFileSystemPath'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('passToDependencyTree', 'getFileSystemPath'));
 
         $mockedHelper->expects($this->any())
             ->method('getFileSystemPath')
@@ -1124,7 +1123,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/shared/js/test.js', $scriptObjects[0]->attributes['src']);
     }
 
-    public function testGetScriptsToLoadCallsLookForCompiledFileIfUseCompiledFilesIsTrue() {
+    public function testGetScriptsToLoadCallsReverseResolveFromCompiledFileIfUseCompiledFilesIsTrue() {
         $testCdn = 'https://cdn.test.com';
         $config = array(
             'cdn' => array(
@@ -1137,14 +1136,14 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('lookForCompiledFile', 'getFileSystemPath'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('reverseResolveFromCompiledFile', 'getFileSystemPath'));
 
         $mockedHelper->expects($this->any())
             ->method('getFileSystemPath')
             ->will($this->returnValue(''));
 
         $mockedHelper->expects($this->once())
-            ->method('lookForCompiledFile')
+            ->method('reverseResolveFromCompiledFile')
             ->with($this->equalTo('shared/js/test.js'))
             ->will($this->returnValue(array( 'shared/js/test.js' ) ));
 
@@ -1156,7 +1155,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetScriptsToLoadCallsLookForCompiledFileIfUseCompiledFilesIsTrue
+     * @depends testGetScriptsToLoadCallsReverseResolveFromCompiledFileIfUseCompiledFilesIsTrue
      */
     public function testGetScriptsToLoadReturnsArrayOfScriptObjectsRepresentingCompiledAndManifestFiles($scriptObjects)
     {
@@ -1179,7 +1178,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('passToDependencyTree', 'getFileSystemPath'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('passToDependencyTree', 'getFileSystemPath'));
 
         $mockedHelper->expects($this->any())
             ->method('getFileSystemPath')
@@ -1191,7 +1190,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue( array( 'shared/js/test.js' ) ) );
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
         $mockedFileHandler->expects($this->at(0))
             ->method('is_file')
             ->with( $this->sharedPath . '/' . 'js/test.compiled.js')
@@ -1216,14 +1215,14 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getFileSystemPath'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getFileSystemPath'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
         $mockedHelper->expects($this->any())
             ->method('getFileSystemPath')
             ->will($this->returnValue(''));
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
 
         $mockedFileHandler->expects($this->at(0))
             ->method('is_file')
@@ -1265,7 +1264,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getScriptsToLoad'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getScriptsToLoad'));
 
         $mockedHelper->expects($this->once())
             ->method('getScriptsToLoad')
@@ -1296,7 +1295,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getScriptsToLoad'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getScriptsToLoad'));
 
         $mockedHelper->expects($this->once())
             ->method('getScriptsToLoad')
@@ -1439,7 +1438,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         . 'js/test.js"></script>' , $this->helper->toString());
     }
 
-    public function testAppendSharedFileCallsLookForCompiledFileWhenUseCompiledScriptsIsTrue()
+    public function testAppendSharedFileCallsReverseResolveFromCompiledFileWhenUseCompiledScriptsIsTrue()
     {
         $testCdn = 'https://cdn.test.com';
         $config = array(
@@ -1453,14 +1452,14 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('lookForCompiledFile', 'getFileSystemPath'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('reverseResolveFromCompiledFile', 'getFileSystemPath'));
 
         $mockedHelper->expects($this->any())
             ->method('getFileSystemPath')
             ->will($this->returnValue(''));
 
         $mockedHelper->expects($this->once())
-            ->method('lookForCompiledFile')
+            ->method('reverseResolveFromCompiledFile')
             ->with($this->equalTo( $this->sharedPath . '/' . 'js/test.js') )
             ->will($this->returnValue(array( '/' . $this->sharedPath . '/' . 'js/test.js' )));
 
@@ -1489,7 +1488,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         . 'js/test.js"></script>' , $this->helper->toString());
     }
 
-    public function testPrependSharedFileCallsLookForCompiledFileWhenUseCompiledScriptsIsTrue()
+    public function testPrependSharedFileCallsReverseResolveFromCompiledFileWhenUseCompiledScriptsIsTrue()
     {
         $testCdn = 'https://cdn.test.com';
         $config = array(
@@ -1503,14 +1502,18 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('lookForCompiledFile', 'getFileSystemPath'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('reverseResolveFromCompiledFile', 'getFileSystemPath'));
 
         $mockedHelper->expects($this->any())
             ->method('getFileSystemPath')
             ->will($this->returnValue(''));
 
+        $mockedHelper->expects($this->any())
+            ->method('getResolver')
+            ->will($this->returnValue(''));
+
         $mockedHelper->expects($this->once())
-            ->method('lookForCompiledFile')
+            ->method('reverseResolveFromCompiledFile')
             ->with($this->equalTo( $this->sharedPath . '/' . 'js/test.js') )
             ->will($this->returnValue(array( '/' . $this->sharedPath . '/' . 'js/test.js' )));
 
@@ -1534,7 +1537,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getStyleFileReference'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getStyleFileReference'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
         $styleFile = $this->getMock('stdClass', array('appendStylesheet'));
@@ -1545,7 +1548,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
             ->method('getStyleFileReference')
             ->will($this->returnValue($styleFile));
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
             ->will($this->returnValue(true));
@@ -1576,7 +1579,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
         );
         $this->setUpMockConfig($config);
 
-        $mockedHelper = $this->getMock('EMRCore\Zend\Mvc\View\Helper\ScriptFile', array('getStyleFileReference'));
+        $mockedHelper = $this->getMock('JsPackager\Zend\Mvc\View\Helper\ScriptFile', array('getStyleFileReference'));
         $mockedHelper->setServiceLocator($this->helperServiceLocatorMock);
 
         $styleFile = $this->getMock('stdClass', array('prependStylesheet'));
@@ -1587,7 +1590,7 @@ class ScriptFileMoreTest extends \PHPUnit_Framework_TestCase
             ->method('getStyleFileReference')
             ->will($this->returnValue($styleFile));
 
-        $mockedFileHandler = $this->getMock('EMRCore\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
+        $mockedFileHandler = $this->getMock('JsPackager\JsPackager\FileHandler', array('is_file', 'fopen', 'fgets', 'fclose'));
         $mockedFileHandler->expects($this->any())
             ->method('is_file')
             ->will($this->returnValue(true));

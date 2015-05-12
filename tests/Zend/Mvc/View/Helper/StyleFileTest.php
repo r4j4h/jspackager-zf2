@@ -125,6 +125,7 @@ class StyleFileTest extends \PHPUnit_Framework_TestCase
 
     public function testNamespaceRegisteredInPlaceholderRegistryAfterInstantiation()
     {
+        $this->markTestSkipped('PHPUnit_Framework_Error_Deprecated : Placeholder view helpers should no longer use a singleton registry');
         $registry = PlaceholderRegistry::getRegistry();
         if ($registry->containerExists('Zend_View_Helper_StyleFile')) {
             $registry->deleteContainer('Zend_View_Helper_StyleFile');
