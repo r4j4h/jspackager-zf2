@@ -33,7 +33,7 @@ use JsPackager\Helpers\Reflection as ReflectionHelper;
 class CacheBustTest extends \PHPUnit_Framework_TestCase
 {
     // Tests are run from EMRCore root
-    const fixturesBasePath = 'tests/EMRCoreTest/lib/EMRCoreTest/JsPackager/fixtures/';
+    const fixturesBasePath = 'vendor/r4j4h/jspackager-test/tests/JsPackager/fixtures/';
 
     /**
      * @var ScriptFile

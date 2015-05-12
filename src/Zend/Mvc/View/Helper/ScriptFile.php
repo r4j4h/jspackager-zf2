@@ -8,6 +8,7 @@ namespace JsPackager\Zend\Mvc\View\Helper;
 use JsPackager\Compiler;
 use JsPackager\Exception\MissingFile as MissingFileException;
 use JsPackager\FileHandler;
+use JsPackager\ManifestResolver;
 use JsPackager\Zend2FileUrl;
 use Zend\Config\Config as ZendConfig;
 use Zend\Http\PhpEnvironment\Request as ZendRequest;
@@ -248,7 +249,6 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
         // Strip any baseUrl and leading slashes
         $sourceScript = $this->getRealPathFromRelativePath( $sourceScript );
-
         if ( $config->use_compiled_scripts ) {
             try {
                 $scriptPaths = $this->lookForCompiledFile( $sourceScript );
@@ -331,7 +331,6 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
             $thisSrc = $value->attributes['src'];
 
             $scripts = $this->getScriptsToLoad( $thisSrc );
-
             foreach ($scripts as $script)
             {
                 $thisScriptSrc = $script->attributes['src'];
@@ -567,38 +566,55 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
      *
      * @param $filePath string File's path
      */
-    protected function parseManifestFile($filePath) {
-        $fileHandler = $this->getFileHandler();
+    protected function parseManifestFile($filePath) { // TODO Refactor to use ManifestResolver
         $stylesheets = array();
         $packages = array();
+        $resolver = $this->getResolver();
 
-        if ( !$fileHandler->is_file( $filePath ) ) {
-            return false;
-        }
+        $filesFromManifest = $resolver->resolveFile( $filePath );
 
-        // Parse file line by line
-        $fh = $fileHandler->fopen( $filePath, 'r' );
-        while ( ( $line = $fileHandler->fgets($fh) ) !== false )
+        foreach ($filesFromManifest as $file)
         {
-            // Strip new line characters
-            $line = rtrim( $line, "\r\n" );
-
-            if ( preg_match('/.js$/i', $line ) ) {
-                $packages[] = $line;
+            if ( preg_match('/.js$/i', $file ) ) {
+                $packages[] = $file;
             }
-            else if ( preg_match('/.css$/i', $line ) ) {
-                $stylesheets[] = $line;
-            }
-            else {
-                throw new ParsingException("Malformed manifest entry encountered", null, $line);
+            else if ( preg_match('/.css$/i', $file ) ) {
+                $stylesheets[] = $file;
             }
         }
-        $fileHandler->fclose($fh);
 
         return array(
             'stylesheets' => $stylesheets,
             'packages' => $packages
         );
+    }
+
+
+
+    /**
+     * @var ManifestResolver
+     */
+    protected $resolver;
+
+    /**
+     * @return ManifestResolver
+     */
+    public function getResolver()
+    {
+        $this->resolver = ( $this->resolver ? $this->resolver : new ManifestResolver() );
+
+        $this->resolver->remoteFolderPath = $this->locallyHostedRemotePath;
+        $this->resolver->baseFolderPath = $this->getBaseUrl(); //'.';
+
+        return $this->resolver;
+    }
+
+    /**
+     * @param ManifestResolver $resolver
+     */
+    public function setResolver($resolver)
+    {
+        $this->resolver = $resolver;
     }
 
 
