@@ -7,6 +7,7 @@ namespace JsPackager\Zend\Mvc\View\Helper;
 
 use JsPackager\Compiler;
 use JsPackager\Exception\MissingFile as MissingFileException;
+use JsPackager\Exception\MissingFile;
 use JsPackager\FileHandler;
 use JsPackager\ManifestResolver;
 use JsPackager\Zend2FileUrl;
@@ -569,13 +570,14 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
      *
      * @param $sourceFilePath
      * @return array
-     * @throws \EMRCore\JsPackager\Exception\MissingFile
+     * @throws MissingFile
      */
     protected function reverseResolveFromCompiledFile($sourceFilePath, $deeper = false)
     {
-        $resolver = new ManifestResolver();
-        $resolver->baseFolderPath = './';
-        $resolver->remoteFolderPath = 'shared';
+        $resolver = $this->getResolver();
+
+        $resolver->baseFolderPath = '';
+        $resolver->remoteFolderPath = $this->browserRelativePathToRemote;;
         return $resolver->resolveFile( $sourceFilePath );
     }
 
@@ -585,7 +587,8 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
     protected function replaceRemoteSymbolIfPresent($filePath, $browserRelativePathToRemote = '') {
 
-        $resolver = new ManifestResolver();
+        $resolver = $this->getResolver();
+
         return $resolver->replaceRemoteSymbolIfPresent( $filePath, $browserRelativePathToRemote );
 
     }
