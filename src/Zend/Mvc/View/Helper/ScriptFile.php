@@ -597,7 +597,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
      *
      * @param $filePath string File's path
      */
-    protected function parseManifestFile($filePath) { // TODO Refactor to use ManifestResolver
+    protected function parseManifestFile($filePath) {
         $stylesheets = array();
         $packages = array();
         $resolver = $this->getResolver();
