@@ -261,7 +261,6 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
         // Strip any baseUrl and leading slashes
         $sourceScript = $this->getRealPathFromRelativePath( $sourceScript );
-
         if ( $config->use_compiled_scripts ) {
             try {
                 $scriptPaths = $this->reverseResolveFromCompiledFile( $sourceScript );
@@ -351,7 +350,6 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
             $thisSrc = $value->attributes['src'];
 
             $scripts = $this->getScriptsToLoad( $thisSrc );
-
             foreach ($scripts as $script)
             {
                 $script->attributes['src'] = $this->replaceRemoteSymbolIfPresent($script->attributes['src'], $this->browserRelativePathToRemote);
@@ -590,6 +588,64 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         $resolver = new ManifestResolver();
         return $resolver->replaceRemoteSymbolIfPresent( $filePath, $browserRelativePathToRemote );
 
+    }
+
+    /**
+     * Extracts packages and stylesheets from a given a manifest file.
+     *
+     * Item in manifest are expected to be separated by newlines, with NO other characters or spaces.
+     *
+     * @param $filePath string File's path
+     */
+    protected function parseManifestFile($filePath) { // TODO Refactor to use ManifestResolver
+        $stylesheets = array();
+        $packages = array();
+        $resolver = $this->getResolver();
+
+        $filesFromManifest = $resolver->resolveFile( $filePath );
+
+        foreach ($filesFromManifest as $file)
+        {
+            if ( preg_match('/.js$/i', $file ) ) {
+                $packages[] = $file;
+            }
+            else if ( preg_match('/.css$/i', $file ) ) {
+                $stylesheets[] = $file;
+            }
+        }
+
+        return array(
+            'stylesheets' => $stylesheets,
+            'packages' => $packages
+        );
+    }
+
+
+
+    /**
+     * @var ManifestResolver
+     */
+    protected $resolver;
+
+    /**
+     * @return ManifestResolver
+     */
+    public function getResolver()
+    {
+        $this->resolver = ( $this->resolver ? $this->resolver : new ManifestResolver() );
+
+        $this->resolver->remoteFolderPath = $this->locallyHostedRemotePath;
+        $this->resolver->baseFolderPath = $this->getBaseUrl(); //'.';
+
+        return $this->resolver;
+    }
+
+    /**
+     * @param ManifestResolver $resolver
+     */
+    public function setResolver($resolver)
+    {
+        $this->resolver = $resolver;
     }
 
 

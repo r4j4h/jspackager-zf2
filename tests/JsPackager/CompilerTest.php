@@ -112,7 +112,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
         $stylesheets = array();
         $packages = array();
 
-        $manifestFileContents = ReflectionHelper::invoke( $compiler, 'generateManifestFileContents', array( $packages, $stylesheets ) );
+        $manifestFileContents = ReflectionHelper::invoke( $compiler, 'generateManifestFileContents', array( 'relpath', $packages, $stylesheets ) );
 
         $this->assertEquals('', $manifestFileContents, "Manifest should be empty" );
 
@@ -133,7 +133,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
             'another/package.compiled.js'
         )) . PHP_EOL;
 
-        $manifestFileContents = ReflectionHelper::invoke( $compiler, 'generateManifestFileContents', array( $packages, $stylesheets ) );
+        $manifestFileContents = ReflectionHelper::invoke( $compiler, 'generateManifestFileContents', array( 'relpath', $packages, $stylesheets ) );
 
         $this->assertEquals($expectedOutput, $manifestFileContents, "Manifest should have packages" );
     }
@@ -148,7 +148,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
         );
         $packages = array();
 
-        $manifestFileContents = ReflectionHelper::invoke( $compiler, 'generateManifestFileContents', array( $packages, $stylesheets ) );
+        $manifestFileContents = ReflectionHelper::invoke( $compiler, 'generateManifestFileContents', array( 'relpath', $packages, $stylesheets ) );
 
     }
 
@@ -165,7 +165,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
             'another/package.js'
         );
 
-        $manifestFileContents = ReflectionHelper::invoke( $compiler, 'generateManifestFileContents', array( $packages, $stylesheets ) );
+        $manifestFileContents = ReflectionHelper::invoke( $compiler, 'generateManifestFileContents', array( 'relpath', $packages, $stylesheets ) );
 
         $expectedContents = <<<BLOCK
 some/stylesheet.css
@@ -428,7 +428,7 @@ BLOCK;
 
         $compiledFilesContents = "window.dep_5=!0;window.dep_4=!0;" . PHP_EOL;
         $manifestContents = <<<MANIFEST
-tests/JsPackager/fixtures/2_deps_2_package_2_deep/package/subpackage/dep_4_style.css
+dep_4_style.css
 
 MANIFEST;
 
@@ -453,8 +453,8 @@ MANIFEST;
 
         $compiledFilesContents = "window.dep_3=!0;" . PHP_EOL;
         $manifestContents = <<<MANIFEST
-tests/JsPackager/fixtures/2_deps_2_package_2_deep/package/dep_3_style.css
-tests/JsPackager/fixtures/2_deps_2_package_2_deep/package/subpackage/dep_4.compiled.js
+dep_3_style.css
+subpackage/dep_4.compiled.js
 
 MANIFEST;
 
@@ -478,7 +478,7 @@ MANIFEST;
         $result = $compiler->compileDependencySet( $dependencySet );
 
         $compiledFilesContents = "window.dep_1=!0;window.dep_2=!0;window.main=!0;" . PHP_EOL;
-        $manifestContents = $basePath . '/package/dep_3.compiled.js' . PHP_EOL;
+        $manifestContents = 'package/dep_3.compiled.js' . PHP_EOL;
 
         $this->assertEquals( $basePath, $result->path, "Compiled path should be main.js's path" );
         $this->assertEquals(
