@@ -6,6 +6,8 @@
 namespace JsPackager\Zend\Mvc\View\Helper;
 
 use JsPackager\Compiler;
+use JsPackager\DependencyTree;
+use JsPackager\DependencyTreeParser;
 use JsPackager\Exception\MissingFile as MissingFileException;
 use JsPackager\Exception\MissingFile;
 use JsPackager\FileHandler;
@@ -88,8 +90,12 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
      */
     protected function getBaseUrl()
     {
+        $baseUrl = '';
         $request = new ZendRequest();
-        return $request->getBaseUrl();
+        if ( $request ) {
+            $baseUrl = $request->getBaseUrl();
+        }
+        return $baseUrl;
     }
 
     /**
@@ -209,10 +215,12 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         $cdnSharedPath = $config->cdn->cdn_shared_path;
 
         // Prefix with public path so we can load it
-        $cdnSharedPathInPublic = 'public/' . $cdnSharedPath;
+        $cdnSharedPathInPublic = $this->getServerSideWebRootPath() . '/' . $cdnSharedPath;
 
         // Pass to dependency tree
-        $depTree = new \JsPackager\Zend2DependencyTree( $scriptSrc, null, true, null, $cdnSharedPathInPublic );
+        $muteMissingFileExceptions = true;
+        $logger = null;
+        $depTree = new DependencyTree( $scriptSrc, null, $muteMissingFileExceptions, $logger, $cdnSharedPathInPublic );
         $dependencies = $depTree->flattenDependencyTree(false);
 
         return $dependencies;
@@ -262,6 +270,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
         // Strip any baseUrl and leading slashes
         $sourceScript = $this->getRealPathFromRelativePath( $sourceScript );
+
         if ( $config->use_compiled_scripts ) {
             try {
                 $scriptPaths = $this->reverseResolveFromCompiledFile( $sourceScript );
@@ -284,7 +293,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         foreach ($scriptPaths as $idx => $scriptPath) {
 
 
-            $scriptPath = $this->replaceRemoteSymbolIfPresent($scriptPath, $this->browserRelativePathToRemote);
+            $scriptPath = $this->replaceRemoteSymbolIfPresent($scriptPath, $this->getLocallyHostedRemotePath());
 
             // We want to now remove the real absolute file system path
             $scriptPath = str_replace( $this->getFileSystemPath(), '', $scriptPath );
@@ -353,7 +362,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
             $scripts = $this->getScriptsToLoad( $thisSrc );
             foreach ($scripts as $script)
             {
-                $script->attributes['src'] = $this->replaceRemoteSymbolIfPresent($script->attributes['src'], $this->browserRelativePathToRemote);
+                $script->attributes['src'] = $this->replaceRemoteSymbolIfPresent($script->attributes['src'], $this->getLocallyHostedRemotePath());
 
                 $thisScriptSrc = $script->attributes['src'];
 
@@ -413,7 +422,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
             foreach ($scripts as $script)
             {
 
-                $script->attributes['src'] = $this->replaceRemoteSymbolIfPresent( $script->attributes['src'], $this->browserRelativePathToRemote);
+                $script->attributes['src'] = $this->replaceRemoteSymbolIfPresent( $script->attributes['src'], $this->getLocallyHostedRemotePath());
                 $thisScriptSrc = $script->attributes['src'];
 
                 // Handle stylesheet dependencies
@@ -575,15 +584,19 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
     protected function reverseResolveFromCompiledFile($sourceFilePath, $deeper = false)
     {
         $resolver = $this->getResolver();
+        $filePaths = $resolver->resolveFile( $sourceFilePath );
 
-        $resolver->baseFolderPath = '';
-        $resolver->remoteFolderPath = $this->browserRelativePathToRemote;;
-        return $resolver->resolveFile( $sourceFilePath );
+        // Resolver uses current working directory, which in this case is outside of the web root
+        // so we need to trim that substring out!
+        foreach( $filePaths as $index => $filePath ) {
+            $filePaths[ $index ] = ltrim( $filePath, 'public/' );
+        }
+
+        return $filePaths;
     }
 
 
     protected $remoteSymbol = '@remote';
-    protected $browserRelativePathToRemote = 'shared';
 
     protected function replaceRemoteSymbolIfPresent($filePath, $browserRelativePathToRemote = '') {
 
@@ -591,6 +604,60 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
         return $resolver->replaceRemoteSymbolIfPresent( $filePath, $browserRelativePathToRemote );
 
+    }
+
+    /**
+     * @var string Server side relative path to folder where browser sees "root"
+     */
+    protected $serverSideWebRootPath = 'public';
+
+    /**
+     * @var string Path to locally hosted remote set of files
+     */
+    protected $locallyHostedRemotePath = 'shared';
+
+    protected $usingCompiledFiles = false;
+
+
+
+    /**
+     * @return string
+     */
+    public function getServerSideWebRootPath()
+    {
+        return $this->serverSideWebRootPath;
+    }
+
+    /**
+     * @param string $serverSideWebRootPath
+     */
+    public function setServerSideWebRootPath($serverSideWebRootPath)
+    {
+        $this->serverSideWebRootPath = $serverSideWebRootPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocallyHostedRemotePath()
+    {
+        return $this->locallyHostedRemotePath;
+    }
+
+    /**
+     * @param string $locallyHostedRemotePath
+     */
+    public function setLocallyHostedRemotePath($locallyHostedRemotePath)
+    {
+        $this->locallyHostedRemotePath = $locallyHostedRemotePath;
+    }
+
+
+
+    protected function createDependencyTreeParser() {
+        $deptreeParser = new DependencyTreeParser();
+        $deptreeParser->remoteFolderPath = $this->getServerSideWebRootPath() . '/' . $this->getLocallyHostedRemotePath();
+        return $deptreeParser;
     }
 
     /**
@@ -604,8 +671,19 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
         $stylesheets = array();
         $packages = array();
         $resolver = $this->getResolver();
+        $deptreeParser = $this->createDependencyTreeParser();
 
         $filesFromManifest = $resolver->resolveFile( $filePath );
+
+        foreach($filesFromManifest as $idx => $filePath) {
+            $filesFromManifest[$idx] = $resolver->replaceRemoteSymbolIfPresent($filePath, $this->getLocallyHostedRemotePath());
+            // Find any @remote references and replace the @remote and anything before it with the real base path to remote
+            $filesFromManifest[$idx] = $deptreeParser->normalizeRelativePath( $filesFromManifest[$idx] );
+            // Normalize paths - e.g. remove any `../../` type stuff
+        }
+
+        $filesFromManifest = array_merge(array_keys(array_flip($filesFromManifest)));
+        // This is faster than array_unique and doesn't cause gaps in array keys
 
         foreach ($filesFromManifest as $file)
         {
@@ -637,8 +715,8 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
     {
         $this->resolver = ( $this->resolver ? $this->resolver : new ManifestResolver() );
 
-        $this->resolver->remoteFolderPath = $this->locallyHostedRemotePath;
-        $this->resolver->baseFolderPath = $this->getBaseUrl(); //'.';
+        $this->resolver->remoteFolderPath = $this->getLocallyHostedRemotePath();
+        $this->resolver->baseFolderPath = $this->getBaseUrl();
 
         return $this->resolver;
     }
