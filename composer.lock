@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ed243f5674d376b39013b5ca4878ad33",
+    "hash": "31f5873d7f21cc07b2a11fb427f018d1",
     "packages": [
         {
             "name": "psr/log",
@@ -46,16 +46,16 @@
         },
         {
             "name": "r4j4h/jspackager-test",
-            "version": "dev-master",
+            "version": "dev-manifests-supporting-remote",
             "source": {
                 "type": "git",
                 "url": "https://github.com/r4j4h/jspackager-test.git",
-                "reference": "f85593d3d8aa0e68f2f261fe01ae2317ff270bb9"
+                "reference": "6503fd81e69a1c091669e6284f110dd240628e5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/r4j4h/jspackager-test/zipball/f85593d3d8aa0e68f2f261fe01ae2317ff270bb9",
-                "reference": "f85593d3d8aa0e68f2f261fe01ae2317ff270bb9",
+                "url": "https://api.github.com/repos/r4j4h/jspackager-test/zipball/6503fd81e69a1c091669e6284f110dd240628e5d",
+                "reference": "6503fd81e69a1c091669e6284f110dd240628e5d",
                 "shasum": ""
             },
             "require": {
@@ -94,10 +94,10 @@
                 "file inclusion"
             ],
             "support": {
-                "source": "https://github.com/r4j4h/jspackager-test/tree/master",
+                "source": "https://github.com/r4j4h/jspackager-test/tree/manifests-supporting-remote",
                 "issues": "https://github.com/r4j4h/jspackager-test/issues"
             },
-            "time": "2015-04-10 23:08:25"
+            "time": "2015-05-11 23:44:37"
         },
         {
             "name": "zendframework/zendframework",

@@ -61,13 +61,6 @@ class CacheBustTest extends \PHPUnit_Framework_TestCase
     private $pluginServiceLocatorMock;
     private $helperServiceLocatorMock;
 
-
-    /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return void
-     */
     public function setUp()
     {
         $this->basePath = __DIR__ . '/_files/modules';

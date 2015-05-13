@@ -147,7 +147,7 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
         }
 
         if ( isset( $value->media ) ) {
-            $value->media = "print, screen";
+            $value->media = $this->applyPrintMediaType( $value->media );
         }
         
         return $this->getContainer()->append($value);
@@ -172,7 +172,7 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
         $value->href = $this->addCacheBust( $value->href );
 
         if ( isset( $value->media ) ) {
-            $value->media = "print, screen";
+            $value->media = $this->applyPrintMediaType( $value->media );
         }
 
         return $this->getContainer()->offsetSet($index, $value);
@@ -196,7 +196,7 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
         $value->href = $this->addCacheBust( $value->href );
 
         if ( isset( $value->media ) ) {
-            $value->media = "print, screen";
+            $value->media = $this->applyPrintMediaType( $value->media );
         }
 
         return $this->getContainer()->prepend($value);
@@ -220,11 +220,24 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
         $value->href = $this->addCacheBust( $value->href );
 
         if ( isset( $value->media ) ) {
-            $value->media = "print, screen";
+            $value->media = $this->applyPrintMediaType( $value->media );
         }
 
         return $this->getContainer()->set($value);
     }
 
+    /**
+     * Function to easily place all our stylesheets into the printers view
+     *
+     * @param $media
+     * @return string
+     */
+    protected function applyPrintMediaType($media) {
+        if ( $media === 'screen' ) {
+            return "print, screen";
+        } else {
+            return $media;
+        }
+    }
 
 }
