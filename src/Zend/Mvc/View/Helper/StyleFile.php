@@ -25,6 +25,9 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
 
     protected $serviceLocator;
 
+    private $stompingMediaType = null;
+
+
     /**
      * Helpful method to append shared stylesheets.
      * @param $path
@@ -226,6 +229,24 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
         return $this->getContainer()->set($value);
     }
 
+
+    /**
+     * @return null
+     */
+    public function getStompingMediaType()
+    {
+        return $this->stompingMediaType;
+    }
+
+    /**
+     * @param null $stompingMediaType
+     */
+    public function setStompingMediaType($stompingMediaType)
+    {
+        $this->stompingMediaType = $stompingMediaType;
+    }
+
+
     /**
      * Function to easily place all our stylesheets into the printers view
      *
@@ -233,8 +254,9 @@ class StyleFile extends HeadLink implements ServiceLocatorAwareInterface
      * @return string
      */
     protected function applyPrintMediaType($media) {
-        if ( $media === 'screen' ) {
-            return "print, screen";
+        $mediaType = $this->getStompingMediaType();
+        if ( $mediaType ) {
+            return $mediaType;
         } else {
             return $media;
         }

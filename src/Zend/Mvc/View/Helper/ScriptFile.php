@@ -526,7 +526,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
      */
     public function getFileHandler()
     {
-//        return $this->serviceLocator->get('EMRCore\JsPackager\FileHandler');
+//        return $this->serviceLocator->get('JsPackager\FileHandler');
         return ( $this->fileHandler ? $this->fileHandler : new FileHandler() );
     }
 
@@ -534,7 +534,7 @@ class ScriptFile extends HeadScript implements ServiceLocatorAwareInterface
 
     public function getCompiler()
     {
-//        return $this->serviceLocator->get('EMRCore\JsPackager\Compiler');
+//        return $this->serviceLocator->get('JsPackager\Compiler');
         return ( $this->compiler ? $this->compiler : new Compiler() );
     }
 
